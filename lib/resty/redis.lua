@@ -286,6 +286,24 @@ function hmset(self, hashname, ...)
 end
 
 
+function ds_hmset(self, hashname, ...)
+    local args = {...}
+    if #args == 1 then
+        local t = args[1]
+        local array = {}
+        for k, v in pairs(t) do
+            insert(array, k)
+            insert(array, v)
+        end
+        -- print("key", hashname)
+        return _do_cmd(self, "ds_hmset", hashname, unpack(array))
+    end
+
+    -- backwards compatibility
+    return _do_cmd(self, "ds_hmset", hashname, ...)
+end
+
+
 function init_pipeline(self)
     self._reqs = {}
 end
